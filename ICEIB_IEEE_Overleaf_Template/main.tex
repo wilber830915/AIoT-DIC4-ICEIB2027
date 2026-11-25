@@ -22,7 +22,7 @@
 }
 
 % ---------- Title and Authors ----------
-\title{Your Paper Title: A Concise and Informative Description}
+\title{TrailGuard TW: An Evidence-Based Mountain Risk Decision Support Agent for Taiwan}
 
 \author{
 \IEEEauthorblockN{WEN WEI CHENG\IEEEauthorrefmark{1}}
@@ -37,105 +37,124 @@ wilber830915@gmail.com}
 
 % ---------- Abstract ----------
 \begin{abstract}
-Write a concise summary of the research problem, motivation, proposed
-method, experimental design, key results, and main contribution.
-Avoid citations and unexplained abbreviations where possible.
+After the implementation of the ``Open Mountain'' policy in 2019, the number of visitors to Taiwan's high-mountain national parks decreased by half, while the accident rate doubled to 0.08--0.09\%. Among all mountain accidents nationwide, getting lost accounts for 38.61\% and self-organised groups account for 55.85\%, indicating that pre-trip decision quality is the critical gap. Existing mountain information is scattered and lacks timeliness, and the success rate of large language models (LLMs) in multi-constraint planning is only 0.6\%. This paper proposes TrailGuard TW, an evidence-based mountain risk decision support agent: the LLM is responsible for understanding and interpretation, the Python engine calculates P50/P90 hiking duration, weather windows, and altitude sickness risk, the temporal knowledge graph manages information validity, the Evidence Ledger implements ``no source, no number,'' and hard red flags directly output NO-GO. The study compares 120 cases using control and ablation groups, and takes the False-Safe Rate (FSR) as the core metric, with the expectation of establishing an auditable, human-in-the-loop paradigm for decision support agents in high-risk domains.
 \end{abstract}
 
 \begin{IEEEkeywords}
-Keyword 1, Keyword 2, Keyword 3, Keyword 4
+Mountain Safety, TrailGuard TW, Evidence-Based Decision Support, Large Language Models, False-Safe Rate, Human-in-the-loop
 \end{IEEEkeywords}
 
 % ---------- 1. Introduction ----------
 \section{Introduction}
-Introduce the research background and practical motivation. Clearly define
-the problem, explain why it matters, and summarize the limitations of existing
-approaches. End this section by listing the main contributions.
+Taiwan possesses abundant high-mountain resources and diverse hiking environments. Following the promotion of the ``Open Mountain'' (開放山林) policy in 2019, public access to mountain activities has become more convenient. However, mountain accidents remain a significant challenge for outdoor safety management. According to statistics collected for this study, getting lost accounts for 38.61\% of mountain accidents, while self-organised groups account for 55.85\%. These figures suggest that inadequate pre-trip planning and insufficient risk awareness may contribute to mountain incidents.
+
+Before a hiking activity, hikers generally need to collect information from multiple sources, including weather forecasts, trail conditions, route descriptions, altitude information, and official safety announcements. Since these sources are distributed across different platforms and may have different update frequencies, hikers must manually determine whether the information is consistent and still valid.
+
+Large language models provide a convenient interface for natural-language interaction and information summarisation. However, an LLM may generate unsupported statements or fail to recognise critical safety constraints. The success rate of LLMs in multi-constraint planning tasks is only 0.6\%, indicating that relying solely on generative AI for mountain safety decisions is insufficient.
 
 The main contributions of this paper are:
 \begin{itemize}
-    \item Contribution 1: describe the main research contribution.
-    \item Contribution 2: describe the proposed method or system.
-    \item Contribution 3: describe the evaluation and findings.
+    \item We propose TrailGuard TW, an evidence-based mountain risk decision support agent.
+    \item We introduce an Evidence Ledger to maintain traceability between recommendations and their supporting sources.
+    \item We design hard safety constraints (red flags) that directly output NO-GO when critical risk conditions are detected.
+    \item We establish an evaluation framework using 120 cases with the False-Safe Rate (FSR) as the core metric.
 \end{itemize}
 
 % ---------- 2. Related Work ----------
 \section{Related Work}
-Review relevant studies and group them by research theme. Explain how the
-proposed work differs from prior approaches. Cite sources using BibTeX,
-for example \cite{lewis2020rag}.
+Existing mountain safety systems typically provide weather forecasts, route descriptions, and safety announcements separately. These services are often distributed across different websites and platforms, increasing the cognitive burden on hikers and making it difficult to evaluate the combined impact of multiple risk factors.
+
+Large language models have demonstrated strong capabilities in natural-language understanding, question answering, and information summarisation. Nevertheless, LLM-generated responses may contain hallucinated information or unsupported conclusions. In safety-critical applications, generated recommendations should therefore be verified against reliable external evidence. Existing LLM planning methods in multi-constraint scenarios have a low success rate and lack evidence source traceability and hard safety red flag mechanisms.
 
 % ---------- 3. Proposed Method ----------
 \section{Proposed Method}
-Describe the system architecture, methodology, algorithms, and
-implementation details so that the work can be understood and reproduced.
+This paper proposes TrailGuard TW (山徑守護者臺灣), an evidence-based mountain risk decision support agent designed to improve pre-trip mountain safety decisions in Taiwan. The proposed architecture integrates large language models, a deterministic Python risk assessment engine, a temporal knowledge graph, and an Evidence Ledger.
 
 \subsection{System Overview}
-Explain the overall workflow and its major components.
+TrailGuard TW consists of four major components:
+\begin{enumerate}
+    \item \textbf{LLM Interface:} Understands user queries and generates natural-language explanations.
+    \item \textbf{Python Risk Engine:} Performs deterministic calculations for P50/P90 hiking duration, weather windows, and altitude sickness risk.
+    \item \textbf{Temporal Knowledge Graph:} Stores mountain routes, weather conditions, safety announcements, and their temporal validity.
+    \item \textbf{Evidence Ledger:} Records the sources and timestamps supporting each recommendation, implementing the principle of ``no source, no number'' (無來源，無數字).
+\end{enumerate}
 
-% Example figure: upload your image to the Overleaf project and replace
-% figures/system_overview.png with its actual filename.
-% \begin{figure}[t]
-%     \centering
-%     \includegraphics[width=\linewidth]{figures/system_overview.png}
-%     \caption{Overall architecture of the proposed system.}
-%     \label{fig:architecture}
-% \end{figure}
+\subsection{Hard Safety Constraints}
+To prevent unsafe recommendations, TrailGuard TW introduces hard safety constraints. Critical safety conditions—such as official trail closures, severe weather warnings, or other predefined safety restrictions—trigger a direct NO-GO output. The LLM is responsible for explaining the decision, while the deterministic risk engine enforces the safety constraints.
 
-\subsection{Mathematical Formulation}
-Define the variables before or immediately after using them. For example,
-the mean squared error (MSE) can be expressed as
+\subsection{Travel Time Estimation}
+The system estimates hiking duration using route distance, elevation gain, and terrain-related factors. A simplified travel-time model can be expressed as:
 \begin{equation}
-    \mathrm{MSE} = \frac{1}{N}\sum_{i=1}^{N}(y_i-\hat{y}_i)^2,
-    \label{eq:mse}
+T_{\mathrm{total}} = T_{\mathrm{ascent}} + T_{\mathrm{descent}} + T_{\mathrm{rest}}
+\label{eq:travel}
 \end{equation}
-where $N$ is the number of samples, $y_i$ is the ground-truth value, and
-$\hat{y}_i$ is the predicted value.
+To represent uncertainty, the system considers both the median and the 90th-percentile travel-time estimates:
+\begin{equation}
+T_{\mathrm{P50}} = Q_{0.50}(T), \qquad T_{\mathrm{P90}} = Q_{0.90}(T)
+\end{equation}
+where $Q_p(T)$ represents the $p$-th percentile of estimated travel time.
 
 % ---------- 4. Experimental Setup ----------
 \section{Experimental Setup}
-Describe the dataset, preprocessing, hardware/software environment,
-baseline methods, parameter settings, and evaluation metrics.
+A simulation dataset containing 120 mountain hiking scenarios is planned for evaluating the proposed system. The scenarios cover different combinations of weather conditions, route difficulty, hiking duration, elevation gain, official safety warnings, and information freshness.
 
-\subsection{Dataset}
-Describe the data source, sample size, features, labels, and data split.
+The proposed approach is compared with the following methods:
+\begin{itemize}
+    \item \textbf{LLM-only:} Uses an LLM to generate recommendations without deterministic risk verification.
+    \item \textbf{Rule-based:} Uses predefined rules to evaluate route feasibility.
+    \item \textbf{RAG-based:} Retrieves external information and generates recommendations using an LLM.
+    \item \textbf{TrailGuard TW:} Integrates LLM reasoning, deterministic risk assessment, temporal information, and evidence tracking.
+\end{itemize}
 
-\subsection{Implementation Details}
-Report the software versions, hardware specifications, and important
-hyperparameters needed for reproducibility.
+Each scenario is labelled according to its expected risk category and recommended decision.
 
 % ---------- 5. Results and Discussion ----------
 \section{Results and Discussion}
-Present quantitative and qualitative results. Interpret the findings rather
-than only repeating the values in tables.
+This section presents the experimental results after the simulation and evaluation have been completed. The comparison focuses on:
+
+\begin{enumerate}
+    \item False-Safe Rate across different methods.
+    \item Evidence traceability and citation validity.
+    \item Travel-time estimation accuracy.
+    \item System performance under outdated or conflicting information.
+    \item The effectiveness of hard safety constraints.
+\end{enumerate}
+
+\subsection{False-Safe Rate}
+False-Safe Rate (FSR) measures the proportion of unsafe scenarios incorrectly classified as safe:
+\begin{equation}
+FSR = \frac{N_{\mathrm{unsafe\rightarrow safe}}}{N_{\mathrm{unsafe}}}
+\label{eq:fsr}
+\end{equation}
+A lower FSR indicates better safety performance. The expected outcome is that TrailGuard TW significantly reduces the rate at which high-risk hiking plans are misclassified as safe, establishing an auditable, human-in-the-loop paradigm for decision support agents in high-risk domains.
 
 \begin{table}[t]
-\caption{Example quantitative comparison.}
+\caption{Experimental Results Comparison}
 \label{tab:results}
 \centering
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-Method & Metric 1 & Metric 2 \\
+Method & FSR & Evidence Traceability & Risk Identification \\
 \midrule
-Baseline A & 0.00 & 0.00 \\
-Baseline B & 0.00 & 0.00 \\
-Proposed Method & 0.00 & 0.00 \\
+LLM-only & TBD & TBD & TBD \\
+Rule-based & TBD & TBD & TBD \\
+RAG-based & TBD & TBD & TBD \\
+TrailGuard TW & TBD & TBD & TBD \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Discuss the strengths, limitations, possible sources of error, and
-implications of the results. Refer to tables and figures in the text,
-e.g., Table~\ref{tab:results}.
+The values in Table~\ref{tab:results} should be replaced with actual experimental measurements. No experimental performance is assumed in this template.
 
 % ---------- 6. Conclusion ----------
 \section{Conclusion}
-Summarize the problem, proposed approach, and major findings. State the
-limitations and identify concrete directions for future work.
+This paper proposes TrailGuard TW, an evidence-based mountain risk decision support agent designed to improve pre-trip mountain safety decisions in Taiwan. The proposed architecture integrates large language models, a deterministic Python risk engine, a temporal knowledge graph, and an Evidence Ledger. By separating natural-language interaction from deterministic safety verification, the system aims to reduce unsupported recommendations and improve decision traceability.
+
+Furthermore, hard safety constraints provide an additional safeguard against critical risks, while temporal validity checking helps prevent outdated information from influencing recommendations. Future work will focus on implementing the complete system, collecting real-world mountain scenarios, and conducting comprehensive experiments to evaluate its reliability and practical effectiveness.
 
 % ---------- Acknowledgment (optional) ----------
 \section*{Acknowledgment}
-The authors would like to thank ...
+The authors would like to thank the relevant organisations and data providers for their publicly available mountain, weather, and safety information.
 
 % ---------- References ----------
 \balance
