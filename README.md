@@ -1,32 +1,15 @@
 # TrailGuard TW ｜山徑守護者
 
-> 以證據為基礎的臺灣高山行程規劃與風險決策支援代理人
+> 以證據為基礎的臺灣高山行程規劃與風險決策支援代理人  
 > An evidence-grounded trip-planning and risk-decision support agent for Taiwan's high mountains.
 
 ![status](https://img.shields.io/badge/status-proposal%20stage-orange)
 ![course](https://img.shields.io/badge/course-IoT%20Applications%20%26%20Data%20Analytics-blue)
 ![license](https://img.shields.io/badge/license-TBD-lightgrey)
+![github](https://img.shields.io/badge/github-wilber830915%2FAIoT--DIC4--ICEIB2027-blue?logo=github)
+![overleaf](https://img.shields.io/badge/overleaf-AIoT--DIC4-green?logo=overleaf)
 
----
-
-## 目錄
-
-- [專案簡介](#專案簡介)
-- [問題背景](#問題背景)
-- [設計原則](#設計原則)
-- [系統架構](#系統架構)
-- [處理流程](#處理流程)
-- [核心功能](#核心功能)
-- [評估指標與實驗設計](#評估指標與實驗設計)
-- [專案結構](#專案結構)
-- [安裝](#安裝)
-- [如何執行](#如何執行)
-- [Demo](#demo)
-- [開發時程](#開發時程)
-- [研究限制](#研究限制)
-- [資料來源與參考文獻](#資料來源與參考文獻)
-- [文件索引](#文件索引)
-- [授權](#授權)
+> **GitHub 儲存庫：** https://github.com/wilber830915/AIoT-DIC4-ICEIB2027.git
 
 ---
 
@@ -39,7 +22,7 @@
 本專案依課程規範採用 **AI Agent + Domain Knowledge + Data Analytics + Real-World Application** 的組合，而非單一模型或聊天機器人：
 
 | 組成 | 本專案的實踐 |
-| --- | --- |
+|------|-------------|
 | AI Agent | LLM 負責語意理解、缺槽追問、結果解釋；規劃與工具選擇走狀態機流程 |
 | Domain Knowledge | 山域事故結構、高山症（AMS）、步程模型（Tobler / Naismith）、入園與封閉法規 |
 | Data Analytics | 確定性 Python 引擎計算步程 P50/P90、天氣窗格、風險矩陣與多約束最佳化 |
@@ -70,7 +53,7 @@
 ## 設計原則
 
 | 原則 | 含義 | 落實方式 |
-| --- | --- | --- |
+|------|------|---------|
 | **No source, no trust** | 沒有來源就沒有信任 | 每個數字都寫入 Evidence Ledger，記錄來源、時間戳與計算路徑 |
 | **Safety before optimization** | 安全先於最佳化 | 硬性紅旗（颱風、封閉、重症）直接覆寫所有評分，輸出 NO-GO |
 | **Human in the loop** | 人類負責撤退與問責 | AI 負責計算與舉證，人類負責決定與承擔 |
@@ -156,7 +139,7 @@ flowchart TB
 計算、引用與立場一致性都是 LLM 的已知弱項，因此本系統採**神經符號分工**：
 
 | LLM 弱項 | 文獻證據 | 本系統對策 |
-| --- | --- | --- |
+|----------|----------|-----------|
 | 精確計算 | 實際計算準確率最好約 63% | 步程、窗格、AMS、最佳化交由 Python 引擎 |
 | 引用來源 | 50–90% 引用未被完整支撐 | 每個事實帶來源，寫入 Evidence Ledger |
 | 堅持立場 | 約 58% 會順著使用者說 | 狀態機 + 缺槽追問，避免諂媚 |
@@ -186,44 +169,111 @@ flowchart TD
     J -.記錄.-> M
 ```
 
-核心演算法（`Algorithm 1: Evidence-Grounded Trip Planning Agent`、`Algorithm 2: Hard-Constraint and Red-Flag Verification`）將於實作階段提供具行號的 pseudocode，並收錄於 `DESIGN.md`。
+---
+
+## GitHub 與 Overleaf 整合
+
+本專案同時維護於 **GitHub**（版本控制）與 **Overleaf**（雲端 LaTeX 編輯與編譯），兩者透過 `olcli`（Overleaf CLI）進行檔案同步。
+
+### GitHub 儲存庫
+
+- 網址：https://github.com/wilber830915/AIoT-DIC4-ICEIB2027.git
+- 用途：原始碼、LaTeX 原始檔、參考資料、PDF 編譯產出、專案文件的版本控制
+
+### Overleaf 專案
+
+- 用途：LaTeX 雲端編輯、遠端編譯 PDF、與共同作者協作
+
+### 同步方式（olcli）
+
+使用 `@aloth/olcli`（Overleaf CLI）進行雙向檔案同步與遠端編譯：
+
+```bash
+# 認證（使用 Overleaf session cookie）
+export OVERLEAF_SESSION="<你的 overleaf_session2 Cookie>"
+olcli auth status
+
+# 下載 Overleaf 專案到本地
+olcli pull 6b06bb69668f4d5869443455 ./overleaf_sync
+
+# 上傳本地修改到 Overleaf
+olcli push --project 6b06bb69668f4d5869443455 .
+
+# 雙向同步
+olcli sync --project 6b06bb69668f4d5869443455 .
+
+# 遠端編譯 PDF
+olcli compile -r ICEIB_IEEE_Overleaf_Template/main.tex 6b06bb69668f4d5869443455
+
+# 編譯並下載 PDF
+olcli pdf -r ICEIB_IEEE_Overleaf_Template/main.tex -o main_compiled.pdf 6b06bb69668f4d5869443455
+```
+
+> **注意**：Overleaf 預設編譯器為 pdfLaTeX。若需編譯含中文的 `.tex` 檔案（如 `myRef/300字專業摘要_A2Z_Outline.tex`），請在 Overleaf 網頁介面中將 Compiler 切換為 **XeLaTeX**。
 
 ---
 
-## 核心功能
+## 專案結構
 
-一次規劃輸出完整的**行前決策包**：
+本專案目前為提案與論文撰寫階段，目錄結構如下：
 
-- [ ] **三個候選行程**：安全 / 平衡 / 進取，各自標明犧牲了什麼
-- [ ] **逐段風險儀表板**：每段步道的坡度、曝露、天候窗格與風險等級
-- [ ] **撤退點與回頭時間**：門檻型規則，不是連續加權分數
-- [ ] **裝備與水源檢查表**：依路線、天數、季節與人員組成生成
-- [ ] **離線緊急卡**：無訊號時可用的關鍵資訊（座標、撤退點、聯絡方式）
-- [ ] **完整證據鏈**：每一項數字的來源與時間戳記
+```text
+AIoT-DIC4/
+├── README.md                       # 本文件：專題介紹、安裝、執行、Demo
+├── .gitignore                      # Git 忽略設定
+│
+├── ICEIB_IEEE_Overleaf_Template/   # ICEIB IEEE 論文模板（與 Overleaf 專案同步）
+│   ├── README.md                   # 範本說明
+│   ├── main.tex                    # 主論文（已套用 300字專業摘要內容）
+│   ├── main.tex.bk                 # 備份檔
+│   └── references.bib              # 參考文獻
+│
+├── myRef/                          # 參考資料與素材
+│   ├── .gitignore                  # Git 忽略設定
+│   ├── README.md                   # myRef 說明
+│   ├── 300字專業摘要.docx          # 原始專業摘要（Word 格式）
+│   ├── 300字專業摘要_A2Z_Outline.tex            # 中文 A2Z Outline 格式（article）
+│   ├── 300字專業摘要_A2Z_Outline_Overleaf英文版.tex # 英文 IEEEtran 格式
+│   ├── A2Z outline example.pdf     # A–Z 論文大綱 SOP
+│   ├── A4 橫式資訊圖表.pdf         # A4 橫式資訊圖表
+│   ├── IEEE transaction Systems journal style.docx  # IEEE 期刊格式範本
+│   ├── TrailGuard TW 預期貢獻與學術價值.pdf         # 研究貢獻與價值
+│   ├── TrailGuard TW 預期貢獻與學術價值.docx        # 上述文件的可編輯版本
+│   ├── 期末專題提案作業規範.pdf         # 課程提案規範
+│   └── 山徑守護者規劃.pdf            # 三份核心文件對照分析
+│
+├── 300字專業摘要_A2Z_Outline.pdf   # A2Z Outline 格式編譯後 PDF
+├── OpenCode_Overleaf_整合計畫總結.pdf # OpenCode–Overleaf 整合計畫總結
+├── TrailGuard_TW.pdf               # 主論文編譯後 PDF
+├── overleaf draft for IEEE conference.pdf           # Overleaf 草稿
+├── overleaf draft for IEEE conference（修改後）.pdf # 修改後草稿
+└── overleaf_stderr.txt             # Overleaf 編譯錯誤記錄（除錯用）
+```
 
-### 時序知識圖譜（Temporal KG）
+---
 
-臺灣山域資訊具有強烈時效性（例：2026-08-07 多個國家公園全面禁止生態保護區入園，10 月下旬才陸續重開）。因此每個事實都帶有五個時間欄位：
+## 文件索引
 
-| 欄位 | 說明 |
-| --- | --- |
-| `observed_at` | 資料被觀測的時間 |
-| `retrieved_at` | 資料被抓取的時間 |
-| `valid_from` | 事實生效時間 |
-| `valid_to` | 事實失效時間 |
-| `superseded_by` | 被哪一筆新事實取代 |
-
-檢索時以「**出發當日仍然有效**」作為硬性篩選條件，避免引用已失效的封閉公告或過期預報。
-
-### 硬性紅旗（Non-compensatory）
-
-多數風險評分採加權平均，但某些條件一旦成立就不該被其他優點抵銷：
-
-- 颱風警報
-- 步道／生態保護區封閉
-- 嚴重高山症症狀
-
-→ 直接輸出 **NO-GO** 或**升級人工處理**，不參與加權。
+| 文件 | 說明 |
+|------|------|
+| `README.md` | 專題介紹、安裝、執行、Demo（本文件） |
+| `ICEIB_IEEE_Overleaf_Template/main.tex` | ICEIB IEEE 主論文（已套用 300字專業摘要內容） |
+| `ICEIB_IEEE_Overleaf_Template/references.bib` | 參考文獻 |
+| `myRef/300字專業摘要.docx` | 300 字專業摘要（原始 Word 檔） |
+| `myRef/300字專業摘要_A2Z_Outline.tex` | A2Z Outline 格式（中文，article 類別） |
+| `myRef/300字專業摘要_A2Z_Outline_Overleaf英文版.tex` | A2Z Outline 格式（英文，IEEEtran 類別） |
+| `myRef/A2Z outline example.pdf` | A–Z 論文大綱 SOP 範例 |
+| `myRef/A4 橫式資訊圖表.pdf` | A4 橫式資訊圖表 |
+| `myRef/IEEE transaction Systems journal style.docx` | IEEE 期刊格式範本 |
+| `myRef/TrailGuard TW 預期貢獻與學術價值.pdf` | 研究定位、C1–C6 貢獻、H1–H5 假設、A–F 加強版 |
+| `myRef/期末專題提案作業規範.pdf` | 課程提案規範與評分標準 |
+| `myRef/山徑守護者規劃.pdf` | 三份核心文件（Document / PPT / DESIGN.md）與課程規範的對照分析 |
+| `300字專業摘要_A2Z_Outline.pdf` | A2Z Outline 格式編譯後 PDF（Overleaf 產出） |
+| `TrailGuard_TW.pdf` | 主論文編譯後 PDF（Overleaf 產出） |
+| `OpenCode_Overleaf_整合計畫總結.pdf` | OpenCode–Overleaf 整合計畫總結 |
+| `overleaf draft for IEEE conference.pdf` | Overleaf IEEE 會議草稿 |
+| `overleaf draft for IEEE conference（修改後）.pdf` | Overleaf IEEE 會議草稿（修改後） |
+| `overleaf_stderr.txt` | Overleaf 編譯錯誤記錄（除錯用） |
 
 ---
 
@@ -232,7 +282,7 @@ flowchart TD
 ### 評估指標
 
 | 指標 | 全稱 | 目標 | 說明 |
-| --- | --- | --- | --- |
+|------|------|------|------|
 | **CSR** | Constraint Satisfaction Rate | ≥ 85% | 限制滿足率 |
 | **EGR** | Evidence Grounding Rate | ≥ 95% | 每個數字皆有可追溯來源的比例 |
 | **FSR** | False-Safe Rate | ≤ 2% | 該 NO-GO 卻說可以（錯誤而危險）的比例 |
@@ -254,7 +304,7 @@ flowchart TD
 ### 可檢驗假設（falsifiable）
 
 | 假設 | 內容 | 檢驗方式 |
-| --- | --- | --- |
+|------|------|----------|
 | **H1** | TrailGuard TW 的 CSR 顯著高於 GPT-4o zero-shot 與 GPT-4o + 搜尋 | 120 案例配對比較（McNemar） |
 | **H2** | 移除紅旗層後，FSR 顯著上升 | 消融：完整系統 vs. 移除紅旗層 |
 | **H3** | 移除時序 KG 後，時效錯誤率顯著上升 | 消融：突發封閉對抗案例 |
@@ -263,168 +313,12 @@ flowchart TD
 
 ---
 
-## 專案結構
-
-> 以下為規劃中的目錄結構，實際內容隨實作推進調整。
-
-```text
-trailguard/
-├── README.md                  # 本文件：專題介紹、安裝、執行、Demo
-├── DESIGN.md                  # 系統設計文件（Problem → Requirements → ... → Results）
-├── requirements.txt
-├── .env.example               # API 金鑰範本（氣象署、LLM provider）
-│
-├── app/                       # 對外介面層
-│   ├── cli.py                 # 命令列入口
-│   ├── api.py                 # FastAPI 服務（規劃中）
-│   └── ui/                    # 簡易前端（規劃中）
-│
-├── core/                      # 核心邏輯
-│   ├── planner/               # 狀態機、缺槽追問、任務拆解
-│   ├── agent/                 # LLM 工具呼叫與 JSON 契約
-│   ├── analytics/             # 步程、天氣窗格、AMS、最佳化
-│   ├── knowledge/             # 時序知識圖譜、混合式 RAG
-│   ├── safety/                # 硬性紅旗與驗證層
-│   └── evidence/              # Evidence Ledger
-│
-├── data/
-│   ├── raw/                   # 原始資料（不進版控）
-│   ├── processed/             # 前處理後的資料
-│   └── schema/                # 資料與工具契約 schema
-│
-├── eval/
-│   ├── cases/                 # 120 個評估案例
-│   ├── adversarial/           # 30 個壓力／對抗案例
-│   └── reports/               # 實驗結果
-│
-└── tests/
-```
-
----
-
-## 安裝
-
-> 以下為預定流程，將於程式碼上線後驗證並更新。
-
-### 環境需求
-
-- Python **3.11+**
-- 網際網路連線（取得氣象與封閉公告）
-- 可選：LLM API 金鑰（OpenAI / Anthropic / 本地模型）
-
-### 步驟
-
-```bash
-git clone <your-repo-url>
-cd trailguard
-
-python -m venv .venv
-source .venv/bin/activate        # Windows: .venv\Scripts\activate
-
-pip install -r requirements.txt
-
-cp .env.example .env             # 填入 API 金鑰
-```
-
-`.env.example`：
-
-```dotenv
-# 中央氣象署開放資料
-CWA_API_KEY=your_key_here
-
-# LLM（依實際採用方案調整）
-LLM_PROVIDER=openai
-LLM_API_KEY=your_key_here
-LLM_MODEL=gpt-4o
-
-# 資料與紀錄
-DATA_DIR=./data
-LEDGER_PATH=./data/ledger/evidence.jsonl
-```
-
----
-
-## 如何執行
-
-> 指令為規劃中的介面，實作後以實際 CLI 為準。
-
-### 1. 產生行前決策包
-
-```bash
-python -m app.cli plan \
-  --route "玉山主峰" \
-  --date 2026-12-20 \
-  --party 4 \
-  --experience beginner \
-  --fitness moderate \
-  --output ./out/yushan_2026-12-20
-```
-
-輸出：
-
-```text
-out/yushan_2026-12-20/
-├── plan.md              # 行前決策包（三種候選行程）
-├── risk_dashboard.html  # 逐段風險儀表板
-├── checklist.md         # 裝備與水源檢查表
-├── emergency_card.pdf   # 離線緊急卡
-└── evidence.jsonl       # Evidence Ledger（來源、時間戳、計算路徑）
-```
-
-### 2. 啟動 API 服務
-
-```bash
-uvicorn app.api:app --reload --port 8000
-```
-
-### 3. 執行評估
-
-```bash
-python -m eval.run --cases ./eval/cases --adversarial ./eval/adversarial
-```
-
----
-
-## Demo
-
-> **尚未提供。** 本專案目前處於提案階段，Demo 影片與操作範例將於實作完成後補上。
-
-預定 Demo 內容：
-
-1. 輸入一個「新手 4 人自組隊、12 月單攻玉山主峰」的行程簡述
-2. 系統追問缺少的體能與撤退經驗
-3. 展示紅旗觸發 → NO-GO 的完整證據鏈
-4. 展示正常情境下產出的三種候選行程與撤退點
-
-| 項目 | 連結 |
-| --- | --- |
-| Demo 影片（YouTube） | _待補_ |
-| 簡報（Final PPT） | _待補_ |
-| 線上試用 | _待補_ |
-
----
-
-## 開發時程
-
-16 週里程碑，實際進度將更新於 Issues 與 Project Board。
-
-| 階段 | 週次 | 主要工作 |
-| --- | --- | --- |
-| 提案 | W1–W4 | 文獻回顧、Research Gap、Proposal 文件與簡報 |
-| 資料 | W5–W7 | 資料來源盤點、爬取與清理、時序 KG schema |
-| 核心 | W8–W11 | 分析引擎、狀態機、Evidence Ledger、紅旗層 |
-| 整合 | W12–W13 | Agent 與工具契約整合、端到端流程 |
-| 評估 | W14–W15 | 120 案例實驗、消融、統計檢定 |
-| 交付 | W16 | Final Handover：README、DESIGN、PPT、Demo 影片 |
-
----
-
 ## 研究限制
 
 先寫出來，審查時比較站得住：
 
 | 限制 | 說明 | 緩解方式 |
-| --- | --- | --- |
+|------|------|---------|
 | 案例不等於因果 | 國際 AI 誤導案例多為媒體報導，無法證明 AI 是事故主因 | 僅用於說明動機，不用於證明效果 |
 | 黃金標準的主觀性 | 「該不該 NO-GO」需要專家判斷 | 請 2–3 位資深領隊獨立標註，計算 Cohen's κ |
 | 資料可得性 | 部分事故統計僅有媒體轉述 | 投稿前向國家公園署索取原始資料 |
@@ -439,13 +333,12 @@ python -m eval.run --cases ./eval/cases --adversarial ./eval/adversarial
 
 完整文獻清單（32 筆）與引用對應請見：
 
-- [`TrailGuard TW 預期貢獻與學術價值.pdf`](TrailGuard%20TW%20預期貢獻與學術價值.pdf) §參考文獻
-- `DESIGN.md` §References
+- [`myRef/TrailGuard TW 預期貢獻與學術價值.pdf`](myRef/TrailGuard%20TW%20預期貢獻與學術價值.pdf) §參考文獻
 
 關鍵引用（節錄）：
 
 | # | 文獻 | 用途 |
-| --- | --- | --- |
+|---|------|------|
 | [1] | Xie et al. (2024). *TravelPlanner*. ICML. | LLM 多約束規劃成功率 0.6% |
 | [4] | *TG-RAG: Temporal Graph RAG*. | 時序知識圖譜方法基礎 |
 | [7] | 內政部消防署（2026）。114 年山域事故案件概況。 | 事故統計、族群分布 |
@@ -453,23 +346,6 @@ python -m eval.run --cases ./eval/cases --adversarial ./eval/adversarial
 | [20] | *Nature Communications* (2025). Citation support in LLMs. | 引用未被支撐比例 50–90% |
 | [24] | 中央社（2025-08-21）。玉山東峰雷擊。 | 紅旗層動機案例 |
 | [26] | 《人工智慧基本法》（2026-01-14 施行）。 | 人類自主與問責原則 |
-
----
-
-## 文件索引
-
-| 文件 | 說明 |
-| --- | --- |
-| `README.md` | 專題介紹、安裝、執行、Demo（本文件） |
-| `DESIGN.md` | 系統設計文件：Architecture、Components、Data Flow、Algorithm、Implementation Mapping、Results、Limitations（待補） |
-| `山徑守護者規劃.pdf` | 三份核心文件（Document / PPT / DESIGN.md）與課程規範的對照分析 |
-| `期末專題提案作業規範.pdf` | 課程提案規範與評分標準 |
-| `TrailGuard TW 預期貢獻與學術價值.pdf` | 研究定位、C1–C6 貢獻、H1–H5 假設、A–F 加強版 |
-| `TrailGuard TW 預期貢獻與學術價值.docx` | 上述文件的可編輯版本 |
-| `300字專業摘要.docx` | 300 字專業摘要 |
-| `A4 橫式資訊圖表.pdf` | A4 橫式資訊圖表 |
-| `IEEE transaction Systems journal style.docx` | IEEE 期刊格式範本 |
-| `A2Z outline example.pdf` | A–Z 論文大綱 SOP |
 
 ---
 
