@@ -20,3 +20,6 @@
 
 # olcli sync temp
 overleaf_sync/
+
+# 編譯產物
+*.pdf
