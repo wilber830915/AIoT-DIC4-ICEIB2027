@@ -226,4 +226,58 @@ FSR = \frac{N_{\text{unsafe} \rightarrow \text{safe}}}{N_{\text{unsafe}}}
 \subsection*{Z. Zen 結論與未來工作}
 最終強調問題獲得解決與研究貢獻：建立一個證據為基礎、人類最終決策的高風險領域代理人。未來工作將著重於完整系統實作、收集真實登山情境資料，並進行更大規模的實驗驗證。
 
+\appendix
+\section{附錄：A2Z 大綱對應總覽}
+下表彙整 A2Z Outline 的所有小節與其在本文中的對應位置：
+
+\begin{table}[htbp]
+\centering
+\caption{A2Z 大綱對應總覽表}
+\label{tab:a2z-overview}
+\begin{tabular}{l|l|p{7cm}}
+\toprule
+代號 & 小節名稱 & 對應內容摘要 \\
+\midrule
+A & Attention Getter / Motivation & 「開放山林」後入園人次減半、事故率倍增至 0.08–0.09\% \\
+B & But（挑戰） & 迷路占 38.61\%，自組隊伍占 55.85\%，行前決策品質是關鍵缺口 \\
+C & Cure（解藥） & 提出 TrailGuard TW 證據為基礎的高山風險決策支援代理人 \\
+D & Development（方法設計） & LLM 語意理解 + Python 定量引擎 + 時序知識圖譜 + Evidence Ledger \\
+E & Experiments（實驗） & 120 個案例比較對照與消融組 \\
+F & Findings（結果） & 錯誤安全率（FSR）為核心指標，建立可稽核代理人範式 \\
+G & General 現況 & 臺灣高山資源豐富，開放山林後登山活動普及 \\
+H & However 挑戰 & 現有資訊分散時效性不足，登山者難以整合風險資訊 \\
+I & In literature 文獻 & LLM 多約束規劃成功率僅 0.6\% \\
+J & Judgement 評論 & 既有方法缺乏證據來源追溯與硬性安全紅旗機制 \\
+K & Keypoint 設計精神與 novelty & 證據為基礎，人類最終決策，LLM 理解 + Python 計算 \\
+L & List the organization 文章結構 & 相關工作、架構、模擬實驗、結論 \\
+M & Methods 文獻中有關此問題的解（分類） & 規則式、統計模型、AI 建議系統三類，從舊到新分類 \\
+N & New proposed 新趨勢 & 結合 LLM 語意理解與 Python 定量引擎的證據導向代理人 \\
+O & Organize 歸納 & 以 4$\times$5 表格歸納既有方法與本研究差異 \\
+PA & Aim = Statement 目標 & 建立可稽核、由人類做最終決策的高風險領域代理人範式 \\
+PB & Based on / Background & 入園人次減半但事故率倍增，行前決策品質是關鍵缺口 \\
+PC & Cure / Cause 解法及有用的原因 & 採證據為基礎，結合 LLM 與 Python 定量計算降低規劃失誤 \\
+PD & Design 架構 & 四大組件：LLM 介面、Python 風險引擎、時序知識圖譜、Evidence Ledger \\
+PE & Paper element 元件 & 語言模型、定量計算引擎、知識圖譜、證據帳本、安全紅旗 \\
+PF & Formulation / Foundation 功能 & P50／P90 步程估算、天氣窗格判斷、高山症風險評估 \\
+PG & Graph 架構圖說明 & TikZ 架構圖展示五大組件互動流程 \\
+PH & How 達成設計目標 & LLM 解析需求，Python 計算風險，Evidence Ledger 追溯來源，紅旗攔截高風險 \\
+PI & Implementation / Interaction & Python 實作風險引擎，LLM 透過 API 互動，圖資料庫儲存知識圖譜 \\
+PJ & Jump to an example 舉例 & 雪山主峰單日登山行程，強風預警觸發 NO-GO \\
+PK & Key points contribution 重點貢獻 & 證據可稽核、人類最終決策、多約束風險定量化 \\
+PL & Later how to do simulation & 120 個案例模擬，涵蓋不同天候、路線難度、海拔與行程長度 \\
+PM & Math proof 數學證明 & FSR 定義為不安全情境被錯誤分類為安全的比例 \\
+Q & Quality and Quantity 實驗量與性質指標 & 120 個案例，核心指標為 FSR \\
+R & Related method to compare 比較方法 & 對照組為規則式系統，消融組移除各組件驗證貢獻 \\
+S & Simulation Setup 模擬設置 & 涵蓋不同天候、路線難度、海拔與行程長度 \\
+T & Tuning 參數調整 & 風險閾值網格搜尋，LLM 提示詞多輪迭代優化 \\
+U & Useful results 有用結果 & TrailGuard TW 在 FSR、CSR、MAPE 三項指標優於對照組 \\
+V & Verify 驗證有效性 & 消融組實驗驗證各組件對系統可靠性的貢獻 \\
+W & What proposed 回顧研究意義、動機、挑戰 & 回應高山事故倍增與行前決策品質缺口的課題 \\
+X & eXcel 專精情境 & 適用於高風險戶外活動規劃，特別是多約束登山決策 \\
+Y & Yields 產出 & 實驗數據與模擬結果顯示以 FSR 為核心指標之成效 \\
+Z & Zen 結論與未來工作 & 建立可稽核、由人類做最終決策的高風險領域代理人範式 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \end{document}
