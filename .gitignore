@@ -17,3 +17,6 @@
 
 # Overleaf
 .overleaf/
+
+# olcli sync temp
+overleaf_sync/
