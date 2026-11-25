@@ -9,7 +9,8 @@
 ![github](https://img.shields.io/badge/github-wilber830915%2FAIoT--DIC4--ICEIB2027-blue?logo=github)
 ![overleaf](https://img.shields.io/badge/overleaf-AIoT--DIC4-green?logo=overleaf)
 
-> **GitHub 儲存庫：** https://github.com/wilber830915/AIoT-DIC4-ICEIB2027.git
+> **GitHub 儲存庫：** https://github.com/wilber830915/AIoT-DIC4-ICEIB2027.git  
+> **Overleaf 專案：** https://www.overleaf.com/project/6b06bb69668f4d5869443455/share#d8cf67f41fb18e1b8c3588a30ba2ce674245dc27ed3a7234（AIoT-DIC4）
 
 ---
 
@@ -182,6 +183,7 @@ flowchart TD
 
 ### Overleaf 專案
 
+- 網址：https://www.overleaf.com/project/6b06bb69668f4d5869443455/share#d8cf67f41fb18e1b8c3588a30ba2ce674245dc27ed3a7234（AIoT-DIC4）
 - 用途：LaTeX 雲端編輯、遠端編譯 PDF、與共同作者協作
 
 ### 同步方式（olcli）
