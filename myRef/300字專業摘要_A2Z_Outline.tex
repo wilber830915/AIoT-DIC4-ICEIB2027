@@ -1,0 +1,135 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{xeCJK}
+\usepackage{geometry}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{titlesec}
+
+\setmainfont{Times New Roman}
+\setCJKmainfont{Microsoft JhengHei}
+
+\geometry{margin=2.5cm}
+
+\title{TrailGuard TW：以證據為基礎的高山風險決策支援代理人}
+\author{300字專業摘要（套用 A2Z Outline 格式）}
+\date{}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries}
+  {\thesubsection}{1em}{}
+
+\begin{document}
+
+\maketitle
+
+\noindent\textbf{來源：} \texttt{300字專業摘要.docx} \quad
+\textbf{格式範本：} \texttt{A2Z outline example.pdf}
+
+\section{Abstract}
+\begin{itemize}[leftmargin=*]
+  \item[\textbf{A.}] \textbf{Attention Getter / Motivation（動機及引題）：}
+    2019年「開放山林」後，臺灣高山型國家公園入園人次減半，事故率卻倍增至 0.08–0.09\%。
+  \item[\textbf{B.}] \textbf{But（挑戰）：}
+    全國山域事故中迷路占 38.61\%，自組隊伍占 55.85\%，顯示行前決策品質是關鍵缺口；現有資訊分散且時效性不足。
+  \item[\textbf{C.}] \textbf{Cure（解藥）：}
+    本研究提出 TrailGuard TW，一個以證據為基礎的高山風險決策支援代理人。
+  \item[\textbf{D.}] \textbf{Development（我們的方法設計）：}
+    LLM 負責理解與解釋；Python 引擎計算 P50／P90 步程、天氣窗格與高山症風險；時序知識圖譜管理資訊效期；Evidence Ledger 落實「無來源，無數字」；硬性紅旗直接輸出 NO-GO。
+  \item[\textbf{E.}] \textbf{Experiments（實驗）：}
+    研究以 120 個案例進行比較對照與消融組。
+  \item[\textbf{F.}] \textbf{Findings（結果）：}
+    以錯誤安全率（FSR）為核心指標；預期建立可稽核、由人類做最終決策的高風險領域代理人範式。
+\end{itemize}
+
+\section{Introduction}
+\begin{itemize}[leftmargin=*]
+  \item[\textbf{G.}] \textbf{General 現況：}
+    2019年「開放山林」後，臺灣高山型國家公園入園人次減半，事故率倍增至 0.08–0.09\%。
+  \item[\textbf{H.}] \textbf{However 挑戰：}
+    全國山域事故中迷路占 38.61\%，自組隊伍占 55.85\%，顯示行前決策品質是關鍵缺口；現有資訊分散且時效性高。
+  \item[\textbf{I.}] \textbf{In literature 文獻：}
+    大型語言模型在多約束規劃的成功率僅 0.6\%。
+  \item[\textbf{J.}] \textbf{Judgement 評論：}
+    現有 LLM 規劃方法在多約束情境下成功率低，且缺乏證據來源追溯與硬性安全紅旗機制。
+  \item[\textbf{K.}] \textbf{Keypoint 設計精神與 novelty：}
+    以證據為基礎（Evidence-based），LLM 負責語意理解，Python 引擎負責定量風險計算，Evidence Ledger 確保數據可稽核，硬性紅旗直接輸出 NO-GO，最終決策由人類保留。
+  \item[\textbf{L.}] \textbf{List the organization 文章結構：}
+    本文依序介紹相關工作、提出之 TrailGuard TW 架構、模擬實驗與結論。
+\end{itemize}
+
+\section{Related Work}
+\begin{itemize}[leftmargin=*]
+  \item[\textbf{M.}] \textbf{Methods 文獻中有關此問題的解（分類）：}
+    既有高山風險評估方法與 LLM 多約束規劃方法，從舊到新、從簡單到複雜進行分類。
+  \item[\textbf{N.}] \textbf{New proposed 新趨勢：}
+    提出結合 LLM 語意理解與 Python 定量引擎的證據導向代理人架構。
+  \item[\textbf{O.}] \textbf{Organize 歸納：}
+    依 Judgement 評論各類方法優缺點，以 4$\times$5 表格歸納既有方法與本研究的差異。
+\end{itemize}
+
+\section{Proposed Scheme (From PA to PM)}
+\begin{itemize}[leftmargin=*]
+  \item[\textbf{PA.}] \textbf{Aim = Statement 目標：}
+    建立可稽核、由人類做最終決策的高風險領域代理人範式。
+  \item[\textbf{PB.}] \textbf{Based on / Background / Be focus on / Benefit：}
+    高山型國家公園入園人次減半但事故率倍增，行前決策品質是關鍵缺口。
+  \item[\textbf{PC.}] \textbf{Cure / Cause 解法及有用的原因：}
+    採證據為基礎的決策支援代理人，透過 LLM 語意理解與 Python 定量計算降低規劃失誤。
+  \item[\textbf{PD.}] \textbf{Design 架構：}
+    系統結合 LLM（理解與解釋）、Python 引擎（P50／P90 步程、天氣窗格、高山症風險）、時序知識圖譜（資訊效期管理）、Evidence Ledger（「無來源，無數字」）與硬性紅旗（直接輸出 NO-GO）。
+  \item[\textbf{PE.}] \textbf{Paper element 元件：}
+    語言模型組件、定量計算引擎、知識圖譜組件、證據帳本組件、安全紅旗組件。
+  \item[\textbf{PF.}] \textbf{Formulation / Foundation 功能：}
+    P50／P90 步程估算、天氣窗格判斷、高山症風險評估。
+  \item[\textbf{PG.}] \textbf{Graph 架構圖說明：}
+    （待繪製系統架構圖：LLM $\rightarrow$ Python 引擎 $\rightarrow$ 時序知識圖譜 $\rightarrow$ Evidence Ledger $\rightarrow$ 硬性紅旗 NO-GO）
+  \item[\textbf{PH.}] \textbf{How 達成設計目標：}
+    透過 LLM 解析使用者需求，Python 引擎計算多約束風險，Evidence Ledger 追溯數據來源，紅旗機制擋下高風險方案。
+  \item[\textbf{PI.}] \textbf{Implementation / Interaction among elements / flow chart or Pseudo code：}
+    （待補：元件間互動流程圖或偽碼）
+  \item[\textbf{PJ.}] \textbf{Jump to an example 舉例：}
+    （待舉例：某一高山登山路線之風險決策流程）
+  \item[\textbf{PK.}] \textbf{Key points contribution 重點貢獻：}
+    證據可稽核、人類最終決策、多約束風險定量化。
+  \item[\textbf{PL.}] \textbf{Later how to do simulation：}
+    以 120 個案例進行比較對照與消融組實驗。
+  \item[\textbf{PM.}] \textbf{Math proof 數學證明：}
+    錯誤安全率（FSR）作為核心評估指標。
+\end{itemize}
+
+\section{Simulation}
+\begin{itemize}[leftmargin=*]
+  \item[\textbf{Q.}] \textbf{Quality and Quantity 實驗量與性質指標：}
+    120 個案例；核心指標為錯誤安全率（FSR）。
+  \item[\textbf{R.}] \textbf{Related method to compare 比較方法：}
+    比較對照組與消融組。
+  \item[\textbf{S.}] \textbf{Simulation Setup 模擬設置：}
+    高山風險決策情境，多約束規劃任務。
+  \item[\textbf{T.}] \textbf{Tuning 參數調整：}
+    LLM 提示詞、風險閾值、紅旗觸發條件等參數。
+  \item[\textbf{U.}] \textbf{Useful results 有用結果：}
+    以錯誤安全率（FSR）呈現各組實驗數據。
+  \item[\textbf{V.}] \textbf{Verify 驗證有效性：}
+    驗證 TrailGuard TW 在降低規劃失誤、提升決策可稽核性方面的效果。
+\end{itemize}
+
+\section{Conclusion}
+\begin{itemize}[leftmargin=*]
+  \item[\textbf{W.}] \textbf{What proposed 回顧研究意義、動機、挑戰：}
+    回應「開放山林」後高山事故倍增與行前決策品質缺口的課題。
+  \item[\textbf{X.}] \textbf{eXcel 專精情境：}
+    適用於高風險領域之決策支援，特別是多約束戶外活動規劃。
+  \item[\textbf{Y.}] \textbf{Yields 產出：}
+    實驗數據與模擬結果顯示以錯誤安全率（FSR）為核心指標之成效。
+  \item[\textbf{Z.}] \textbf{Zen 結論與未來工作：}
+    最終強調問題獲得解決與研究貢獻：建立可稽核、由人類做最終決策的高風險領域代理人範式。
+\end{itemize}
+
+\end{document}
